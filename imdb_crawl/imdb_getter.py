@@ -44,30 +44,38 @@ def proc_one_movie(imdb_id, imdb):
 
 
 def proc_movies(ids):
-	imdb = Imdb(anonymize=False)
+	imdb = Imdb(anonymize=True)
 	movies = []
 	for imdb_id in tqdm(ids):
 		try:
 			m = proc_one_movie(imdb_id, imdb)
 			if m is None:
-				break
+				continue
 			movies.append(m)
 		except (KeyboardInterrupt, SystemExit):
 			print("Got keyboard interrupt or sys exit...finishing...")
 			break
 		except HTTPError as e:
-			traceback.print_exc()
 			rsp = e.response
 			if rsp.status_code == 404:
+				print("ERROR: Not found id {}".format(imdb_id))
 				continue
 			else:
-				return movies
+				traceback.print_exc()
+				break
+		except json.decoder.JSONDecodeError as e:
+			print("GOT JSON DECODE ERROR!!!!!!!! Next id...")
+			continue
+		except Exception as e:
+			traceback.print_exc()
+			break
 
 	return movies
 
 
 def read_prev_movies(prev_res_in):
 	mjsons = json.load(prev_res_in)
+	print
 	return [ReviewedMovie(
 		m['imdb_id'], m['title'], m['date'], 
 		m['actors'], m['plots'], m['poster_url'],
