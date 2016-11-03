@@ -1,0 +1,152 @@
+[
+    {
+        "title": "Hot Stuff",
+        "actors": [
+            "Mervyn LeRoy",
+            "Alice White",
+            "Louise Fazenda",
+            "William Bakewell",
+            "Doris Dawson",
+            "Ben Hall",
+            "Charles Sellon",
+            "Buddy Messinger",
+            "Andy Devine",
+            "Larry Banthim",
+            "Wid Gunning",
+            "Sidney Hickox",
+            "Terry O. Morse",
+            "John Hughes",
+            "Max R\u00e9e",
+            "Alvin Knechtel",
+            "Richard A. Rowland"
+        ],
+        "imdb_id": "tt0020000",
+        "poster_url": "https://images-na.ssl-images-amazon.com/images/M/MV5BMDA0NjFkODgtZTkzNy00NDIwLWJhOTctNmRjYjE1OTkzOGYzXkEyXkFqcGdeQXVyMDUyOTUyNQ@@._V1_.jpg",
+        "plots": [],
+        "date": "1929-05-05",
+        "reviews": []
+    },
+    {
+        "title": "The Lady from the Sea",
+        "actors": [
+            "Castleton Knight",
+            "Moore Marriott",
+            "Mona Goya",
+            "Ray Milland",
+            "Bruce Gordon",
+            "Eugenie Amami",
+            "Anita Graham",
+            "Wilfred Shine",
+            "Jack E. Cox",
+            "James E. Rogers",
+            "Theodor Sparkuhl",
+            "A.C. Hammond",
+            "J. Elder Wills",
+            "Frank Mills",
+            "John Reynders",
+            "John Reynders"
+        ],
+        "imdb_id": "tt0020073",
+        "poster_url": null,
+        "plots": [],
+        "date": "1929-05",
+        "reviews": [
+            {
+                "rating": 6,
+                "summary": "Interesting early talkie",
+                "text": "British International Pictures who produced this film were responsible for the production of Britain's first full length sound film Blackmail.They turned ailments into part talkies by making the second half into talking pictures.In this instance they effectively remade the film as a talking picture using a few sequences from the silent film.Presumably it must have been worth their while as this film would serve as the bottom half of a double bill for quota purposes.Ray Mill and was quite caustic about this film in his autobiography,but it is an entertaining and interesting curio.Also interesting to see Moore Marriott a few years before he found fame with Will Hay."
+            },
+            {
+                "rating": 4,
+                "summary": "Creaky Early Brit Sound Meller",
+                "text": "The Lady From The Sea is a creaky early British talkie melodrama, of interest mainly for the young Ray Milland, before he came over to Hollywood, and for some nice cinematography. In fact the DVD I watched brought out especially well the sharp lighting and carefully thought out compositions from famous lenser Theodor Sparkuhl. Milland plays a lifeboatman off the dangerous English Goodwins coast who is injured at sea just before he is supposed to be married, to his childhood sweetheart. A French femme fatale(played by the exotic Mona Goya)whom he has rescued, flirts with him. When his brother tries to break up the threatening romance, she comes on to the brother instead, and he plays along so that the Milland character will give her up, but the brother suddenly dies in an accident. Despondent,the lifeboatman disappears just as his mother has taken sick. After a big rescue scene in a storm, he returns in time to see his mother recover and realize that his first love is really the one for him. The production was shot at Elstree studios but released stateside by Paramount."
+            }
+        ]
+    },
+    {
+        "title": "Nas Margens do Sado",
+        "actors": [],
+        "imdb_id": "tt0020208",
+        "poster_url": null,
+        "plots": [],
+        "date": "1929-01-18",
+        "reviews": []
+    },
+    {
+        "title": "Good Intentions",
+        "actors": [
+            "William K. Howard",
+            "Edmund Lowe",
+            "Marguerite Churchill",
+            "Regis Toomey",
+            "Earle Foxe",
+            "Eddie Gribbon",
+            "Robert McWade",
+            "Georgia Caine",
+            "Owen Davis Jr.",
+            "Pat Somerset",
+            "J. Carrol Naish",
+            "Henry Kolker",
+            "Hale Hamilton",
+            "R.H. Bassett",
+            "Peter Brunelli",
+            "Glen Knight",
+            "George Schneiderman",
+            "Jack Murray",
+            "Duncan Cramer",
+            "Ray Flynn",
+            "R.L. Hough",
+            "Albert Protzman",
+            "William Fox",
+            "Henry Kolker"
+        ],
+        "imdb_id": "tt0020928",
+        "poster_url": "https://images-na.ssl-images-amazon.com/images/M/MV5BOTI1MTMzNjYtMDU1Ni00MjFhLTkzNDItMWU4MzRhZGRhNmZiXkEyXkFqcGdeQXVyMTcyODY2NDQ@._V1_.jpg",
+        "plots": [
+            "Racketeer David Cresson's sudden passion for the straight-and-narrow life is due to his falling in love with Helen Rankin, a society d\u00e9butante. However, his former associate and gang-members are more than slightly irritated, distressed and downright hostile toward his reformation."
+        ],
+        "date": "1930-06-29",
+        "reviews": []
+    },
+    {
+        "title": "The Kibitzer",
+        "actors": [
+            "Edward Sloman",
+            "Harry Green",
+            "Mary Brian",
+            "Neil Hamilton",
+            "Albert Gran",
+            "David Newell",
+            "Guy Oliver",
+            "Tenen Holtz",
+            "Henry Fink",
+            "Lee Kohlmar",
+            "E.H. Calvert",
+            "Thomas A. Curran",
+            "Eddie Kane",
+            "Henry A. Barrows",
+            "Paddy O'Flynn",
+            "Dick Rush",
+            "Eugene Pallette",
+            "Russ Powell",
+            "Charles Sullivan",
+            "W. Franke Harling",
+            "Alfred Gilks",
+            "Eda Warren",
+            "Fred A. Datig",
+            "Harry D. Mills",
+            "Dick Stockton"
+        ],
+        "imdb_id": "tt0020056",
+        "poster_url": null,
+        "plots": [],
+        "date": "1930-01-11",
+        "reviews": [
+            {
+                "rating": 7,
+                "summary": "Oy, vay! Such a schmendrick!",
+                "text": "Before he became a movie star, Edward G Robinson was a New York stage actor who had difficulty getting roles, so he teamed up with newspaperman Jo Swerling to write a play as a stage vehicle for himself. 'The Kibitzer', starring Robinson, was a modest Broadway hit. When Paramount bought the film rights, they didn't consider Edward G Robinson sufficiently well-known to star in the movie version of his own play ... so they cast Harry Green in the lead role.\n\nFor modern audiences, Harry Green is an embarrassment. In exactly the same way that Stepin Fetchit and Wllie Best played stereotypical Negro roles, Harry Green played a stereotypical Jewish character: a pushy, money-grubbing busybody. Just occasionally, Green's on-screen characters were sympathetic, as in 'This Day and Age', but they always embodied the worst stereotypes of Jewish behaviour and speech patterns.\n\nSPOILERS THROUGHOUT. 'The Kibitzer' stars Harry Green as Ike Lazarus, the owner of a Manhattan cigar store which is also the local hangout for people with nothing better to do. Ike considers himself an expert on the stock market, card playing, horse racing, the lot. He seldom risks any money on these things, because his expertise is all hot air. Ike's daughter Josie is romantically involved with Bert Livingston, son of wealthy stockbroker James Livingston. When Ike learns that his daughter and Bert are planning to elope, he decides to warn Livingston.\n\nIke strolls into Livingston's brokerage house without an appointment, and promptly walks into an armed robbery. Bert (who isn't actually Livingston's son, but no matter) has embezzled funds, and is now holding Livingston at gunpoint. More by dumb luck than anything else, Ike knocks the gun out of Bert's hand. As a reward for saving his life, Livingston offers to let Ike in on a hot new stock issue, American Steel ... sure to make a big profit.\n\nIke is too much of a blowhard to admit that he hasn't the money to go halves with Livingston. Instead, he sells pieces of his half of the deal to all the working stiffs in his neighbourhood, promising them big profits. Ike rapidly becomes the local hero ... until American Steel opens its trading, and the shares start dropping rapidly. The ending is unexpected but believable, and quite funny. All ends happily as Josie marries that nice goyisher Eddie Brown.\n\nThere are some good laughs in 'The Kibitzer', but many of them are compromised by the extremely annoying personality of Harry Green. Edward G Robinson eventually proved his ability with comedy, and it would have been nice to see him in the role that he tailored for himself. I'll rate 'The Kibitzer' 7 out of 10."
+            }
+        ]
+    }
+]

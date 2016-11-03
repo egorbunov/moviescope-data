@@ -1,0 +1,29 @@
+[
+    {
+        "imdb_id": "tt0020000",
+        "poster_url": "https://images-na.ssl-images-amazon.com/images/M/MV5BMDA0NjFkODgtZTkzNy00NDIwLWJhOTctNmRjYjE1OTkzOGYzXkEyXkFqcGdeQXVyMDUyOTUyNQ@@._V1_.jpg",
+        "actors": [
+            "Mervyn LeRoy",
+            "Alice White",
+            "Louise Fazenda",
+            "William Bakewell",
+            "Doris Dawson",
+            "Ben Hall",
+            "Charles Sellon",
+            "Buddy Messinger",
+            "Andy Devine",
+            "Larry Banthim",
+            "Wid Gunning",
+            "Sidney Hickox",
+            "Terry O. Morse",
+            "John Hughes",
+            "Max R\u00e9e",
+            "Alvin Knechtel",
+            "Richard A. Rowland"
+        ],
+        "plots": [],
+        "date": "1929-05-05",
+        "reviews": [],
+        "title": "Hot Stuff"
+    }
+]
