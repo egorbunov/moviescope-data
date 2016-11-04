@@ -53,10 +53,10 @@ def get_movie_for_asin(asin, amazon):
             xml_response = amazon.ItemLookup(ItemId=asin, ResponseGroup="ItemAttributes")
             request_ok = True
         except HTTPError as e:
-            if e.code != 503 or e.code != 104 or err_cnt > 0:
+            if e.code != 503 and e.code != 104 and err_cnt > 0:
                 raise
             else:
-                sleep_time = 5
+                sleep_time = 7
                 err_cnt += 1
                 print("Got servise unavailable error," 
                       "sleeping for {} sec and then retry..".format(sleep_time))
