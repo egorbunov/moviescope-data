@@ -1,23 +1,34 @@
 CREATE TABLE movie(
-  id SERIAL PRIMARY KEY,
-  wiki_id BIGINT UNIQUE NOT NULL,
+  wiki_id BIGINT PRIMARY KEY,
   imdb_id BIGINT,
+  title TEXT NOT NULL,
   abstract TEXT NOT NULL,
-  year SMALLINT NOT NULL
+  year SMALLINT NOT NULL,
+  synopsys TEXT
 );
 
 CREATE TABLE review(
   id SERIAL PRIMARY KEY,
-  movie_id INT NOT NULL references movie(id),
+  movie_id BIGINT NOT NULL references movie(wiki_id),
   summary TEXT,
   body TEXT NOT NULL,
   score SMALLINT
 );
+
+-- movie maker roles
+CREATE TYPE role AS ENUM ('actor', 'director');
  
-CREATE TABLE actors(
+-- movie maker description
+CREATE TABLE maker(
   id SERIAL PRIMARY KEY,
-  movie_id INT NOT NULL references movie(id),
-  name char(300) NOT NULL
+  name TEXT NOT NULL,
+  wiki_id BIGINT,
+  about TEXT
 );
-  
-  
+
+-- movie maker participation
+CREATE TABLE participation(
+  maker_id INT NOT NULL references maker(id),
+  movie_id BIGINT NOT NULL references movie(wiki_id),
+  p_role role
+);
