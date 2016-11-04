@@ -61,7 +61,7 @@ def get_movie_for_asin(asin, amazon):
                 print("Got servise unavailable error," 
                       "sleeping for {} sec and then retry..".format(sleep_time))
                 time.sleep(sleep_time)
-    
+
     soup = BeautifulSoup(xml_response, 'lxml')
     items = soup.find_all('item')
     try:
@@ -87,12 +87,22 @@ def read_movies(inp):
     movies_arr = json.load(inp)
     return [Movie(**m) for m in movies_arr]
 
-def get_movies(asins, amazon):
+def get_movies(asins, amazon_keys):
+    (aws_k, aws_sk, aws_aid) = amazon_keys
+    amazon = bottlenose.Amazon(aws_k, aws_sk, aws_aid)
+
     movies = set()
     try:
         for asin in tqdm(asins):
-            movie = get_movie_for_asin(asin, amazon)
-            time.sleep(0.7)
+            retry = True
+            while retry:
+                time.sleep(0.7)
+                try:
+                    movie = get_movie_for_asin(asin, amazon)
+                    retry = False
+                except ConnectionResetError as e:
+                    print("Got connection reset...retrying...")
+                    amazon = bottlenose.Amazon(aws_k, aws_sk, aws_aid)
             if movie is not None:
                 movies.add(movie)
     except (KeyboardInterrupt, SystemExit):
@@ -132,9 +142,8 @@ if __name__ == '__main__':
         print("WARNING: Previous results not passed, all ids will be proceed")
 
     with open(optdict['-k']) as f:
-        (aws_k, aws_sk, aws_aid) = [s.strip() for s in f.readlines()[:3]]
-    amazon = bottlenose.Amazon(aws_k, aws_sk, aws_aid)
-    movies = get_movies(asins, amazon)
+        amazon_keys = [s.strip() for s in f.readlines()[:3]]
+    movies = get_movies(asins, amazon_keys)
     print("Merging previously processed movies with movies just processed...")
     movies = movies.union(already_got_movies)
     print("Got {} movie(s)!".format(len(movies)))
