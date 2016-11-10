@@ -1,6 +1,7 @@
 CREATE TABLE movie(
   wiki_id BIGINT PRIMARY KEY,
   imdb_id TEXT UNIQUE,
+  asin TEXT UNIQUE,
   title TEXT NOT NULL,
   abstract TEXT NOT NULL,
   year SMALLINT NOT NULL,
