@@ -1,124 +1,79 @@
-import tqdm
-from imdbpie import Imdb
-import json
-from requests.exceptions import HTTPError
-from requests import Response
-from tqdm import tqdm
 import sys
-import getopt
 import traceback
-import os
 
-class ReviewedMovie:
-	def __init__(self, imdb_id, title, date, actors, plots, poster_url, reviews):
-		self.imdb_id = imdb_id
-		self.title = title
-		self.date = date
-		self.actors = actors
-		self.plots = plots
-		self.poster_url = poster_url
-		self.reviews = reviews
+from imdbpie import Imdb
+from requests.exceptions import HTTPError
+from tqdm import tqdm
 
-	def add_review(self, r):
-		self.reviews.append(r)
-
-	def add_reviews(self, rs):
-		self.reviews.extend(rs)
-
-	def as_dict(self):
-		return self.__dict__
+from imdb_crawl_db import *
 
 
-def proc_one_movie(imdb_id, imdb):
-	max_reviews_num = 100
-	m = imdb.get_title_by_id(imdb_id)
-	if m is None:
-		return None
-	plots = imdb.get_title_plots(imdb_id) or []
-	reviews = imdb.get_title_reviews(imdb_id, max_results=max_reviews_num) or []
-	return ReviewedMovie(
-		imdb_id, m.title, m.release_date, 
-		[a.name for a in m.credits], plots, m.poster_url,
-		[{'summary': r.summary, 'text': r.text, 'rating': r.rating} for r in reviews]
-	)
+def process_one_movie(imdb_id, imdb):
+    max_reviews_num = 1000
+    m = imdb.get_title_by_id(imdb_id)
+    if m is None:
+        return None
+    plots = imdb.get_title_plots(imdb_id) or []
+    reviews = imdb.get_title_reviews(imdb_id, max_results=max_reviews_num) or []
+    return ReviewedMovie(
+        imdb_id, m.title, m.release_date,
+        [a.name for a in m.credits], plots, m.poster_url,
+        [Review(r.summary, r.text, r.rating) for r in reviews]
+    )
 
 
-def proc_movies(ids):
-	imdb = Imdb(anonymize=True)
-	movies = []
-	for imdb_id in tqdm(ids):
-		try:
-			m = proc_one_movie(imdb_id, imdb)
-			if m is None:
-				continue
-			movies.append(m)
-		except (KeyboardInterrupt, SystemExit):
-			print("Got keyboard interrupt or sys exit...finishing...")
-			break
-		except HTTPError as e:
-			rsp = e.response
-			if rsp.status_code == 404:
-				print("ERROR: Not found id {}".format(imdb_id))
-				continue
-			else:
-				traceback.print_exc()
-				break
-		except json.decoder.JSONDecodeError as e:
-			print("GOT JSON DECODE ERROR!!!!!!!! Next id...")
-			continue
-		except Exception as e:
-			traceback.print_exc()
-			break
+def process_movies(ids, connection):
+    imdb = Imdb(anonymize=True)
 
-	return movies
+    imdb_ids = get_all_movie_ids(connection)
+    print("{} ids need to proceed".format(len(ids)))
+    print("{} films in database".format(len(imdb_ids)))
+    to_process = set(ids).difference(set(imdb_ids))
+    print("{} ids left to proceed".format(len(to_process)))
 
+    for imdb_id in tqdm(to_process):
+        try:
+            m = process_one_movie(imdb_id, imdb)
+            if m is None:
+                continue
+            add_new_movie(m, connection)
+        except (KeyboardInterrupt, SystemExit):
+            print("Got keyboard interrupt or sys exit...finishing...")
+            break
+        except HTTPError as e:
+            rsp = e.response
+            if rsp.status_code == 404:
+                print("ERROR: Not found id {}".format(imdb_id))
+                continue
+            elif rsp.status_code == 400:
+                print("ERROR: Bad request for id {}".format(imdb_id))
+            else:
+                traceback.print_exc()
+                break
+        except json.decoder.JSONDecodeError as e:
+            print("GOT JSON DECODE ERROR!!!!!!!! Next id...")
+            continue
+        except Exception as e:
+            traceback.print_exc()
+            break
 
-def read_prev_movies(prev_res_in):
-	mjsons = json.load(prev_res_in)
-	print
-	return [ReviewedMovie(
-		m['imdb_id'], m['title'], m['date'], 
-		m['actors'], m['plots'], m['poster_url'],
-		[{'summary': r['summary'], 'text': r['text'], 'rating': r['rating'] } for r in m['reviews']])
-	    for m in mjsons ]
 
 if __name__ == "__main__":
-	try:
-		optlist, args = getopt.getopt(sys.argv[1:], 'f:t:o:p:')
-	except getopt.GetoptError as err:
-		print("Bad args!")
-		sys.exit(2)    
+    if len(sys.argv) != 3:
+        print("USAGE: python p/t/script <DB_CONFIG_FILE.json> <imdb ids file>")
+        sys.exit(1)
 
-	optdict = dict(optlist)
-	if '-o' not in optdict or '-f' not in optdict or \
-	   '-t' not in optdict:
-		print("Bad args!!!")
-		sys.exit(2)
+    with open(sys.argv[1]) as f:
+        conn = connect_db(*read_db_config(f))
 
+    with open(sys.argv[2]) as f:
+        array = json.load(f)["results"]["bindings"]
+        ids = [obj["id"]["value"] for obj in array]
 
-	prev_mvs = []
-	if '-p' in optdict:
-		with open(optdict['-p'], 'r') as prev_res_in:
-			prev_mvs = read_prev_movies(prev_res_in)
+    process_movies(ids, conn)
+
+    conn.close()
 
 
-	already_done_ids = set([m.imdb_id for m in prev_mvs])
 
-	print("Already got {} movies".format(len(already_done_ids)))
-
-	fr = int(optdict['-f'])
-	to = int(optdict['-t'])
-	fname = str(optdict['-o'])
-
-	todo_ids = set(["tt{:07}".format(i) for i in range(fr, to)]).difference(already_done_ids)
-
-	with open(fname, 'w') as f_out:
-		path, name = os.path.split(fname)
-		movies = prev_mvs
-		print("Going to retrieve {} movies...".format(len(todo_ids)))
-		movies.extend(proc_movies(todo_ids))
-		print("Got {} movies!".format(len(movies)))
-		print("Dumping...")
-		json.dump([m.as_dict() for m in movies], f_out, indent=4)
-		print("Done!")
 
