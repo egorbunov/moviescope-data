@@ -25,7 +25,7 @@ if __name__ == "__main__":
         asins_data = read_asins_and_data(asin_data)
 
     known_titles_dict = get_all_titles(conn)
-    known_titles = set(s.lower for s in known_titles_dict.values())
+    known_titles = set(s.lower() for s in known_titles_dict.values())
     asin_match_cnt = 0
     for (asin, title) in asins_data:
         if title.lower() in known_titles:
