@@ -1,42 +1,62 @@
 from imdb_crawl_db import *
 import sys
+from itertools import islice
 
 
-def movies_with_plots_and_reviews(connection):
-    all_ids = get_all_movie_ids(connection)
-    cursor = connection.cursor()
-    for movie_id in all_ids:
-        cursor.execute("SELECT plot FROM movie WHERE imdb_id=%s", [movie_id])
-        rows = cursor.fetchall()
-        assert len(rows) == 0 or len(rows) == 1
-        plot = "" if len(rows) == 0 else rows[0][0]
-        cursor.execute("SELECT summary, body FROM review WHERE movie_id=%s", [movie_id])
-        # summary and review body are concatenated
-        reviews = ["{}.{}".format(r[0], r[1]) for r in cursor]
-        # all reviews are concatenated
-        concatenated_reviews = "\n".join(reviews)
-        yield {'movie_id': movie_id, 'plot': plot, 'reviews': concatenated_reviews}
-
-    return set([r[0] for r in cursor])
+def batch_gen(iterator, batch_size):
+    batch = islice(iterator, batch_size)
+    while True:
+        lst = list(batch)
+        yield lst
+        if len(lst) < batch_size:
+            break
+        batch = islice(iterator, batch_size)
 
 
-def fill_search_table(connection):
-    cursor = connection.cursor()
-    # getting already filled movies data to decide UPDATE or INSERT
-    cursor.execute("SELECT movie_id FROM search")
-    already_filled = set([r[0] for r in cursor])
+def fill_plots(connection):
+    print("Filling/updating plots...")
+    get_cursor = connection.cursor()
+    get_cursor.execute("SELECT movie_id FROM search")
+    already_filled = set([r[0] for r in get_cursor])
+    get_cursor.execute("SELECT imdb_id, plot FROM movie")
+    insert_cursor = connection.cursor()
     cnt = 0
-    for m in movies_with_plots_and_reviews(connection):
-        if cnt > 0 and cnt % 10000 == 0:
-            print("{} movies processed\n".format(cnt))
-        if m['movie_id'] in already_filled:
-            cursor.execute("UPDATE search SET plot=%s, reviews=%s WHERE movie_id=%s",
-                           (m['plot'], m['reviews'], m['movie_id']))
+    for r in get_cursor:
+        if cnt != 0 and cnt % 1000 == 0:
+            print("{} plots filled".format(cnt))
+        cnt += 1
+        m_id = r[0]
+        plot = r[1]
+        if m_id in already_filled:
+            insert_cursor.execute("UPDATE search SET plot=%s, reviews=%s where movie_id=%s", (plot, "", m_id))
         else:
-            cursor.execute("INSERT INTO search (movie_id, plot, reviews) VALUES (%s, %s, %s)",
-                           (m['movie_id'], m['plot'], m['reviews']))
+            insert_cursor.execute("INSERT INTO search (movie_id, plot, reviews) VALUES (%s, %s, %s)", (m_id, plot, ""))
+    connection.commit()
+    print("Done!")
+
+
+def fill_reviews(connection):
+    get_cursor = connection.cursor()
+    get_cursor.execute("SELECT movie_id, summary, body FROM review")
+    insert_cursor = connection.cursor()
+    cnt = 0
+    batch_size = 10000
+    for batch in batch_gen(get_cursor, batch_size):
+        print("{} reviews processed".format(cnt))
+        movies_dict = {}
+        for row in batch:
+            m_id = row[0]
+            summary = row[1]
+            review = row[2]
+            if m_id not in movies_dict:
+                movies_dict[m_id] = ""
+            movies_dict[m_id] = "{}\n{}.{}".format(movies_dict[m_id], summary, review)
+        for m_id in movies_dict:
+            insert_cursor.execute("UPDATE search SET reviews = reviews || %s WHERE movie_id=%s",
+                                  (movies_dict[m_id], m_id))
         connection.commit()
-    print("done\n")
+        cnt += len(batch)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -45,4 +65,5 @@ if __name__ == "__main__":
 
     with open(sys.argv[1]) as f:
         connection = connect_db(*read_db_config(f))
-        fill_search_table(connection)
+        fill_plots(connection)
+        fill_reviews(connection)
