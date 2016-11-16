@@ -25,7 +25,10 @@ def fill_search_table(connection):
     # getting already filled movies data to decide UPDATE or INSERT
     cursor.execute("SELECT movie_id FROM search")
     already_filled = set([r[0] for r in cursor])
+    cnt = 0
     for m in movies_with_plots_and_reviews(connection):
+        if cnt > 0 and cnt % 10000 == 0:
+            print("{} movies processed\n".format(cnt))
         if m['movie_id'] in already_filled:
             cursor.execute("UPDATE search SET plot=%s, reviews=%s WHERE movie_id=%s",
                            (m['plot'], m['reviews'], m['movie_id']))
@@ -33,7 +36,7 @@ def fill_search_table(connection):
             cursor.execute("INSERT INTO search (movie_id, plot, reviews) VALUES (%s, %s, %s)",
                            (m['movie_id'], m['plot'], m['reviews']))
         connection.commit()
-
+    print("done\n")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
