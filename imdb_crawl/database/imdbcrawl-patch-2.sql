@@ -1,0 +1,2 @@
+CREATE TABLE review_counts AS WITH counts AS (SELECT count(*) as cnt, movie_id FROM review GROUP BY movie_id) SELECT movie_id, cnt FROM counts;
+ALTER TABLE review_counts ADD FOREIGN KEY(movie_id) REFERENCES movie(imdb_id);
