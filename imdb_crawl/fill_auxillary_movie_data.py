@@ -20,9 +20,6 @@ def fill_one_movie(imdb_id, connection):
     year = movie.year
 
     cursor = connection.cursor()
-    s = cursor.mogrify("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
-                   (genres, votes, rating, m_type, year, imdb_id))
-    print(s)
     cursor.execute("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
                    (genres, votes, rating, m_type, year, imdb_id))
     connection.commit()
@@ -34,7 +31,7 @@ def fill_data(connection):
     data for movies, where score is null
     """
     cursor = connection.cursor()
-    cursor.execute("SELECT imdb_id FROM movie WHERE rating IS NULL;")
+    cursor.execute("SELECT imdb_id FROM movie WHERE votes IS NULL;")
     id_rows = cursor.fetchall()
     imdb_ids = [r[0] for r in id_rows]
     for imdb_id in tqdm(imdb_ids):
