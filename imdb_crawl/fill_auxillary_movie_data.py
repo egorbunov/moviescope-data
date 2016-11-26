@@ -1,5 +1,5 @@
 import sys
-
+import time
 from imdbpie import Imdb
 from requests.exceptions import HTTPError
 from tqdm import tqdm
@@ -47,6 +47,9 @@ def fill_data(connection):
                 continue
             elif rsp.status_code == 400:
                 print("Error: bad request for id {} (got http 400 error), skipping to next id...".format(imdb_id))
+            elif rsp.status_code == 502:
+                print("Sleeping for 10 seconds...")
+                time.sleep(10)
             else:
                 raise e
         except json.decoder.JSONDecodeError as _:
