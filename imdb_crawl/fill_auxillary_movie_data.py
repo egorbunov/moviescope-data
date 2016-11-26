@@ -10,6 +10,9 @@ from imdb_crawl_db import *
 def fill_one_movie(imdb_id, connection):
     imdb = Imdb(anonymize=True)
     movie = imdb.get_title_by_id(imdb_id)
+    if movie is None:
+        print("Movie data is none for id = {} =/".format(imdb_id))
+        return
     genres = movie.genres
     votes = 0 if movie.votes is None else movie.votes
     rating = movie.rating
