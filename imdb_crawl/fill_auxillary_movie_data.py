@@ -20,7 +20,7 @@ def fill_one_movie(imdb_id, connection):
     year = movie.year
 
     cursor = connection.cursor()
-    s = cursor.morgify("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
+    s = cursor.mogrify("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
                    (genres, votes, rating, m_type, year, imdb_id))
     print(s)
     cursor.execute("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
