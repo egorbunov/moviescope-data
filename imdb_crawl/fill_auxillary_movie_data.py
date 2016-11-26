@@ -20,6 +20,7 @@ def fill_one_movie(imdb_id, connection):
     year = movie.year
 
     cursor = connection.cursor()
+    print("Adding data for movie: {}, votes = {}".format(imdb_id, votes))
     cursor.execute("UPDATE movie SET genres=%s, votes=%s, rating=%s, type=%s, year=%s WHERE imdb_id=%s",
                    (genres, votes, rating, m_type, year, imdb_id))
     connection.commit()
@@ -51,6 +52,7 @@ def fill_data(connection):
                 print("Sleeping for 10 seconds...")
                 time.sleep(10)
             else:
+                print("BOOM")
                 raise e
         except json.decoder.JSONDecodeError as _:
             print("Error: json decode error (imdb-pie internal error), skipping to next id...")
